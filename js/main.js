@@ -7,4 +7,4 @@ function getRandomInt(min,max) {
     return 'Некорректный диапазон';
   }
 }
-getRandomInt(0,5);
+getRandomInt(0,10);
