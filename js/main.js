@@ -16,13 +16,13 @@ const OFFER_TIMES = ['12:00', '13:00', '14:00'];
 
 const OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-const OFFER_COUNT_ROOMS = {
-  min: 1,
-  max: 5,
+const OfferCountRooms = {
+  MIN: 1,
+  MAX: 5,
 };
-const OFFER_COUNT_GUESTS = {
-  min: 1,
-  max: 10,
+const OfferCountGuests = {
+  MIN: 1,
+  MAX: 10,
 };
 
 const LocationLat = {
@@ -61,7 +61,7 @@ const getRandomPositiveFloat = (a, b, digits = 1) => {
 const getObjectCard = (id) => {
   const time = OFFER_TIMES[getRandomPositiveInteger(0, OFFER_TIMES.length - 1)];
   const location = {
-    lat: getRandomPositiveFloat(LocationLat.MIN, LocationLng.MAX, 5),
+    lat: getRandomPositiveFloat(LocationLat.MIN, LocationLat.MAX, 5),
     lng: getRandomPositiveFloat(LocationLng.MIN, LocationLng.MAX, 5),
   };
 
@@ -74,8 +74,8 @@ const getObjectCard = (id) => {
       addres: `${location.lat}, ${location.lng}`,
       price: getRandomPositiveInteger(Price.MIN, Price.MAX),
       type: OFFER_TYPES[getRandomPositiveInteger(0, OFFER_TYPES.length - 1)],
-      rooms: getRandomPositiveInteger(OFFER_COUNT_ROOMS.min, OFFER_COUNT_ROOMS.max),
-      guests: getRandomPositiveInteger(OFFER_COUNT_GUESTS.min, OFFER_COUNT_GUESTS.max),
+      rooms: getRandomPositiveInteger(OfferCountRooms.MIN, OfferCountRooms.MAX),
+      guests: getRandomPositiveInteger(OfferCountGuests.MIN, OfferCountGuests.MAX),
       checkin: time,
       checkout: time,
       features: OFFER_FEATURES.slice(0,getRandomPositiveInteger(0, OFFER_FEATURES.length - 1)),
@@ -86,12 +86,7 @@ const getObjectCard = (id) => {
   };
 };
 
-const getObjectArray = (count) => {
-  const arrayObject = [];
-  for (let i = 1; i <= count; i++){
-    arrayObject.push(getObjectCard(i));
-  }
-  return arrayObject;
-};
+const getObjectArray = Array.from({length: COUNT_OBJECTS}, getObjectCard);
 
-getObjectArray(COUNT_OBJECTS);
+// eslint-disable-next-line no-console
+console.log(getObjectArray);
