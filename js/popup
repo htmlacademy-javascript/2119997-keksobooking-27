@@ -1,0 +1,9 @@
+const test = () => {
+  const mapCanvas = document.querySelector('#map__canvas');
+  const rentAdvertTemplate = document.querySelector('#card').content.querySelector('.popup');
+
+  const rentAdvertElement = rentAdvertTemplate.cloneNode(true);
+  mapCanvas.append(rentAdvertElement);
+};
+
+export {test};

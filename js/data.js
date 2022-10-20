@@ -21,7 +21,7 @@ const getObjectCard = (id) => {
       guests: getRandomPositiveInteger(OfferCountGuests.MIN, OfferCountGuests.MAX),
       checkin: time,
       checkout: time,
-      features: OFFER_FEATURES.slice(0,getRandomPositiveInteger(0, OFFER_FEATURES.length - 1)),
+      features: OFFER_FEATURES.slice(0, getRandomPositiveInteger(0, OFFER_FEATURES.length - 1)),
       description: OFFER_DESCRIPTIONS[getRandomPositiveInteger(0, OFFER_DESCRIPTIONS.length - 1)],
       photos: OFFER_PHOTOS[getRandomPositiveInteger(0, OFFER_PHOTOS.length - 1)],
     },
