@@ -1,5 +1,6 @@
-// import {getObjectArray} from './data.js';
-// getObjectArray();
-import {test} from './popup.js';
-test();
+import { initCards } from './card.js';
+import { getOffers } from './data.js';
 
+const data = getOffers();
+
+initCards(data);

@@ -1,7 +1,8 @@
 import {getRandomPositiveInteger, getRandomPositiveFloat} from './utils.js';
 import {COUNT_OBJECTS, OFFER_TITLES, OFFER_TYPES, OFFER_DESCRIPTIONS, OFFER_TIMES, OFFER_FEATURES, OfferCountRooms, OfferCountGuests, LocationLat, LocationLng, Price, OFFER_PHOTOS} from './consts.js';
 
-const getObjectCard = (id) => {
+const getOffer = (_, index) => {
+  const id = index + 1;
   const time = OFFER_TIMES[getRandomPositiveInteger(0, OFFER_TIMES.length - 1)];
   const location = {
     lat: getRandomPositiveFloat(LocationLat.MIN, LocationLat.MAX, 5),
@@ -10,7 +11,7 @@ const getObjectCard = (id) => {
 
   return {
     author: {
-      avatar: `img/avatars/user${id < 10 ? '0' : ''}${id}.png`
+      avatar: `img/avatars/user${id < 10 ? `0${id}` : id}.png`
     },
     offer: {
       title: OFFER_TITLES[getRandomPositiveInteger(0, OFFER_TITLES.length - 1)],
@@ -29,6 +30,6 @@ const getObjectCard = (id) => {
   };
 };
 
-const getObjectArray = () => Array.from({length: COUNT_OBJECTS}, getObjectCard);
+const getOffers = () => Array.from({length: COUNT_OBJECTS}, getOffer);
 
-export {getObjectArray};
+export {getOffers};
