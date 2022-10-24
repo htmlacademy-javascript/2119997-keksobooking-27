@@ -29,7 +29,7 @@ createCard.forEach(({ author, offer }) => {
   // offerElement.querySelector('.popup__features').src = offer.features;
   const featuresContainer = offerElement.querySelector('.popup__features');
   const featuresList = featuresContainer.querySelectorAll('.popup__feature');
-  if (offer.features.length) {
+  if (offer.features.length > 0) {
     featuresList.forEach((featuresListItem) => {
       const isNecessary = offer.features.some(
         (feature) => featuresListItem.classList.contains(`popup__feature--${feature}`),
@@ -73,6 +73,5 @@ createCard.forEach(({ author, offer }) => {
 mapCanvas.append(offersListFragment);
 
 export const initCards = (offers) => {
-  // eslint-disable-next-line no-console
-  console.log(offers);
+  createCard(offers);
 };
