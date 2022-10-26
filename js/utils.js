@@ -12,10 +12,18 @@ const getRandomPositiveFloat = (a, b, digits = 1) => {
   return +result.toFixed(digits);
 };
 
-// Функция склонения слов после чисел
-// Источник: https://wp-kama.ru/note/funktsiya-skloneniya-slov-posle-chisel-php
+const declineNum = ( n, titles ) => {
+  let index = 0;
 
-// eslint-disable-next-line no-nested-ternary
-const declineNum = ( n, titles ) => titles[ 1 === n % 10 && 11 !== n % 100 ? 0 : 2 <= n % 10 && 4 >= n % 10 && ( 10 > n % 100 || 20 <= n % 100 ) ? 1 : 2 ];
+  if (1 === n % 10 && 11 !== n % 100) {
+    index = 0;
+  } else if (2 <= n % 10 && 4 >= n % 10 && ( 10 > n % 100 || 20 <= n % 100 )) {
+    index = 1;
+  } else {
+    index = 2;
+  }
 
-export {getRandomPositiveInteger, getRandomPositiveFloat, declineNum};
+  return titles[index];
+};
+
+export { getRandomPositiveInteger, getRandomPositiveFloat, declineNum };

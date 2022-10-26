@@ -1,10 +1,4 @@
-import {getOffers} from './data.js';
 import {declineNum} from './utils.js';
-const mapCanvas = document.querySelector('#map-canvas');
-const offerTemplate = document.querySelector('#card').content.querySelector('.popup');
-
-const createCard = getOffers();
-const offersListFragment = document.createDocumentFragment();
 
 const typePopup = {
   flat: 'Квартира',
@@ -14,7 +8,11 @@ const typePopup = {
   hotel: 'Отель',
 };
 
-createCard.forEach(({ author, offer }) => {
+const mapCanvas = document.querySelector('#map-canvas');
+const offerTemplate = document.querySelector('#card').content.querySelector('.popup');
+const offersListFragment = document.createDocumentFragment();
+
+const createCard = (({ author, offer }) => {
   const offerElement = offerTemplate.cloneNode(true);
   offerElement.querySelector('.popup__title').textContent = offer.title;
   offerElement.querySelector('.popup__text--address').textContent = offer.addres;
@@ -70,8 +68,12 @@ createCard.forEach(({ author, offer }) => {
   offerElement.querySelector('.popup__avatar').src = author.avatar;
   offersListFragment.append(offerElement);
 });
-mapCanvas.append(offersListFragment);
+
+const createCards = (offers) => {
+  offers.forEach((offer) => createCard(offer));
+  mapCanvas.append(offersListFragment);
+};
 
 export const initCards = (offers) => {
-  createCard(offers);
+  createCards(offers);
 };

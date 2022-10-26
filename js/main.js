@@ -1,8 +1,8 @@
 import { initCards } from './card.js';
 import { getOffers } from './data.js';
-import { switchActive } from './form.js';
+import { switchStatePage } from './page.js';
 
-switchActive();
+switchStatePage(true);
 
 const data = getOffers();
 

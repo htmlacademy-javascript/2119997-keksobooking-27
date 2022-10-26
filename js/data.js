@@ -32,4 +32,4 @@ const getOffer = (_, index) => {
 
 const getOffers = () => Array.from({length: COUNT_OBJECTS}, getOffer);
 
-export {getOffers};
+export { getOffers };
