@@ -59,3 +59,4 @@ const createCards = (offers) => {
 export const initCards = (offers) => {
   createCards(offers);
 };
+
