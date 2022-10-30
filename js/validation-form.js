@@ -13,23 +13,23 @@ const pristine = new Pristine(form, {
   errorTextClass: 'ad-form__error-text'
 });
 
-const TITLE_SIZES = {
-  min: 30,
-  max: 100
+const TitleSizes = {
+  MIN: 30,
+  MAX: 100
 };
 
 const Price = {
-  min: 0,
-  max: 100000
+  MIN: 0,
+  MAX: 100000
 };
 
 // Валидация заголовка объявления
-const validateTitle = (value) => value.length >= TITLE_SIZES.min && value.length <= TITLE_SIZES.max;
+const validateTitle = (value) => value.length >= TitleSizes.MIN && value.length <= TitleSizes.MAX;
 const getErrorTitleMessage = (value) => {
-  if (value.length <= TITLE_SIZES.min) {
-    return `Минимальная длина ${TITLE_SIZES.min} символов`;
-  } else if (value.length >= TITLE_SIZES.max) {
-    return `Максимальная длина ${TITLE_SIZES.max} символов`;
+  if (value.length <= TitleSizes.MIN) {
+    return `Минимальная длина ${TitleSizes.MIN} символов`;
+  } else if (value.length > TitleSizes.MAX) {
+    return `Максимальная длина ${TitleSizes.MAX} символов`;
   } else {
     return 'Обязательное поле';
   }
@@ -37,12 +37,12 @@ const getErrorTitleMessage = (value) => {
 pristine.addValidator(titleLabel, validateTitle, getErrorTitleMessage);
 
 // Валидация цены за ночь
-const validatePrice = () => Number(priceLabel.value) >= Price.min && Number(priceLabel.value) <= Price.max;
+const validatePrice = () => Number(priceLabel.value) >= Price.MIN && Number(priceLabel.value) <= Price.MAX;
 const getErrorPriceMessage = () => {
-  if (Number(priceLabel.value) <= Price.min) {
-    return `Минимальная цена должна быть больше ${Price.min}`;
-  } else if (Number(priceLabel.value) >= Price.max) {
-    return `Максимальная цена должна быть меньше ${Price.max}`;
+  if (Number(priceLabel.value) <= Price.MIN) {
+    return `Минимальная цена должна быть больше ${Price.MIN}`;
+  } else if (Number(priceLabel.value) > Price.MAX) {
+    return `Максимальная цена должна быть меньше ${Price.MAX}`;
   } else {
     return 'Обязательное поле';
   }
