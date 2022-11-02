@@ -3,6 +3,10 @@ const titleLabel = form.querySelector('#title');
 const priceLabel = form.querySelector('#price');
 const roomsLabel = form.querySelector('#room_number');
 const guestsLabel = form.querySelector('#capacity');
+const typeLabel = document.querySelector('#type');
+const timeIn = form.querySelector('#timein');
+const timeOut = form.querySelector('#timeout');
+
 
 const pristine = new Pristine(form, {
   classTo: 'ad-form__element',
@@ -11,7 +15,9 @@ const pristine = new Pristine(form, {
   errorTextParent: 'ad-form__element',
   errorTextTag: 'span',
   errorTextClass: 'ad-form__error-text'
-});
+},
+true
+);
 
 const TitleSizes = {
   MIN: 30,
@@ -21,6 +27,14 @@ const TitleSizes = {
 const Price = {
   MIN: 0,
   MAX: 100000
+};
+
+const typePrice = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
 };
 
 // Валидация заголовка объявления
@@ -68,6 +82,31 @@ const getErrorGuestsMessage = () => {
 };
 pristine.addValidator(guestsLabel, validateRoomsAndGuests, getErrorRoomsMessage);
 pristine.addValidator(roomsLabel, validateRoomsAndGuests, getErrorGuestsMessage);
+
+// Валидация типа жилья
+function validateMinPrice() {
+  return typePrice[typeLabel.value] <= priceLabel.value;
+}
+
+function getMinPriceErrorMessage() {
+  return `Минимальная цена для выбранного типа жилья ${typePrice[typeLabel.value]}`;
+}
+
+pristine.addValidator(priceLabel, validateMinPrice, getMinPriceErrorMessage);
+
+typeLabel.addEventListener('change', () => {
+  priceLabel.placeholder = typePrice[typeLabel.value];
+  pristine.validate(priceLabel);
+});
+
+// Валидация въезд-выезд
+timeIn.addEventListener('change', () => {
+  timeOut.value = timeIn.value;
+});
+
+timeOut.addEventListener('change', () => {
+  timeIn.value = timeOut.value;
+});
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
