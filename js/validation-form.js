@@ -84,13 +84,9 @@ pristine.addValidator(guestsLabel, validateRoomsAndGuests, getErrorRoomsMessage)
 pristine.addValidator(roomsLabel, validateRoomsAndGuests, getErrorGuestsMessage);
 
 // Валидация типа жилья
-function validateMinPrice() {
-  return typePrice[typeLabel.value] <= priceLabel.value;
-}
+const validateMinPrice = () => typePrice[typeLabel.value] <= priceLabel.value;
 
-function getMinPriceErrorMessage() {
-  return `Минимальная цена для выбранного типа жилья ${typePrice[typeLabel.value]}`;
-}
+const getMinPriceErrorMessage = () => `Минимальная цена для выбранного типа жилья ${typePrice[typeLabel.value]}`;
 
 pristine.addValidator(priceLabel, validateMinPrice, getMinPriceErrorMessage);
 
