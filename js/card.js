@@ -12,7 +12,7 @@ const mapCanvas = document.querySelector('#map-canvas');
 const offerTemplate = document.querySelector('#card').content.querySelector('.popup');
 const offersListFragment = document.createDocumentFragment();
 
-const createCard = (({ author, offer }) => {
+export const createCard = (({ author, offer }) => {
   const offerElement = offerTemplate.cloneNode(true);
   offerElement.querySelector('.popup__title').textContent = offer.title;
   offerElement.querySelector('.popup__text--address').textContent = offer.addres;

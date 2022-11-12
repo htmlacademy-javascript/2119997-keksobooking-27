@@ -6,6 +6,7 @@ const guestsLabel = form.querySelector('#capacity');
 const typeLabel = document.querySelector('#type');
 const timeIn = form.querySelector('#timein');
 const timeOut = form.querySelector('#timeout');
+const sliderElement = document.querySelector('.ad-form__slider');
 
 
 const pristine = new Pristine(form, {
@@ -109,5 +110,28 @@ form.addEventListener('submit', (evt) => {
   if (pristine.validate()) {
     form.submit();
   }
+});
+
+// слайдер
+noUiSlider.create(sliderElement, {
+  range: {
+    min: Price.MIN,
+    max: Price.MAX,
+  },
+  start: Price.MIN,
+  step: 1,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  priceLabel.value = sliderElement.noUiSlider.get();
 });
 
