@@ -20,7 +20,7 @@ const countGuestInRoom = {
   '100': ['0'],
 };
 
-export const form = document.querySelector('.ad-form');
+const form = document.querySelector('.ad-form');
 const titleLabel = form.querySelector('#title');
 const priceLabel = form.querySelector('#price');
 const roomsLabel = form.querySelector('#room_number');
@@ -40,7 +40,7 @@ const resetLabelError = (element) => {
   }
 };
 
-export const pristine = new Pristine(form, {
+const pristine = new Pristine(form, {
   classTo: 'ad-form__element',
   successClass: 'has-success',
   errorClass: 'ad-form__element--invalid',
@@ -78,8 +78,8 @@ timeOut.addEventListener('change', () => {
   timeIn.value = timeOut.value;
 });
 
-
-export const validateElement = (element) => {
+const validateElement = (element) => {
   pristine.validate(element);
 };
 
+export { form, pristine, validateElement};

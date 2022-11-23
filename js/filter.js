@@ -1,128 +1,5 @@
-/**
-// Модуль фильтрации и вывода на карту искомого жилья
-
-import { getData } from './api.js';
-import { clearMap, createNearbyMarker } from './map.js';
-import { debounce } from './utils.js';
-
-// Значение фильтра искомого жилья по умолчанию
-const FILTER_DEFAULT_VALUE = 'any';
-
-// Диапазоны цен искомого жилья
-const OffersPriceToRange = {
-  LOW: {
-    MIN: 0,
-    MAX: 10000,
-  },
-  MIDDLE: {
-    MIN: 10000,
-    MAX: 50000,
-  },
-  HIGH: {
-    MIN: 50000,
-    MAX: 100000,
-  },
-};
-
-// Нода с фильтрами карты
-const offersFiltersNode = document.querySelector('.map__filters');
-
-// Поле выбора искомого жилья, тип
-const offersTypeNode = offersFiltersNode.querySelector('#housing-type');
-
-// Поле выбора искомого жилья, цена
-const offersPriceNode = offersFiltersNode.querySelector('#housing-price');
-
-// Поле выбора искомого жилья, количество комнат
-const offersRoomsNode = offersFiltersNode.querySelector('#housing-rooms');
-
-// Поле выбора искомого жилья, количество гостей
-const offersGuestsNode = offersFiltersNode.querySelector('#housing-guests');
-
-// Нода с удобствами искомого жилья
-const offersFeaturesNode = offersFiltersNode.querySelector('#housing-features');
-
-// Коллекция с чекбоксами удобств искомого жилья
-const FeaturesListNode = offersFeaturesNode.querySelectorAll('input');
-
-// Проверки отдельных полей карточек объявлений
-const checkType = (card) => offersTypeNode.value === FILTER_DEFAULT_VALUE || offersTypeNode.value === card.offer.type;
-const checkRooms = (card) => offersRoomsNode.value === FILTER_DEFAULT_VALUE || card.offer.rooms === Number(offersRoomsNode.value);
-const checkGuests = (card) => offersGuestsNode.value === FILTER_DEFAULT_VALUE || card.offer.guests === Number(offersGuestsNode.value);
-const checkPrice = (card) => {
-  const chosenPriceRange = offersPriceNode.value.toUpperCase();
-  return offersPriceNode.value === FILTER_DEFAULT_VALUE ||
-    (
-      card.offer.price > OffersPriceToRange[chosenPriceRange].MIN
-      && card.offer.price < OffersPriceToRange[chosenPriceRange].MAX
-    );
-};
-const FeaturesForSearch = () => Array.from(offersFeaturesNode.querySelectorAll('input:checked'), (input) => input.value);
-const checkFeatures = (card) => {
-  if (FeaturesForSearch() === undefined) {
-    return true;
-  }
-  return FeaturesForSearch().every((item) => {
-    const cardFeatures = card.offer.features;
-    return cardFeatures === undefined ? false : cardFeatures.includes(item);
-  });
-};
-
-// Получаем искомые объявления в количестве не более PINS.MAX
-const getFilteredCards = (cards) => {
-  const filteredCards = [];
-  for (const card of cards) {
-    if (filteredCards.length >= 10) {
-      break;
-    }
-    if (
-      checkType(card)
-      && checkPrice(card)
-      && checkRooms(card)
-      && checkGuests(card)
-      && checkFeatures(card)
-    ) {
-      filteredCards.push(card);
-    }
-  }
-  return filteredCards;
-};
-
-// Следим за изменениями фильтров карты
-const checkFilters = (cb) => {
-  offersFiltersNode.addEventListener('change', () => {
-    cb();
-  });
-  FeaturesListNode.forEach((feature) => {
-    feature.addEventListener('change', () => {
-      cb();
-    });
-  });
-};
-
-const resetFilter = () => {
-  offersFiltersNode.reset();
-};
-
-// Получаем данные и отрисовываем подходящие метки, с задержкой RERENDER_DELAY
-const getFilteredMarkers = () => {
-  getData((cards) => {
-    checkFilters(debounce(
-      () => {
-        clearMap();
-        getFilteredCards(cards).forEach(createNearbyMarker);
-      },
-    ));
-  });
-};
-
-export { getFilteredMarkers, offersFiltersNode, resetFilter };
-
-*/
-
+import { DEBOUNCE_DELAY } from './consts.js';
 import { renderPointsToMap, clearMap } from './map.js';
-
-const DEBOUNCE_TIMER = 500;
 
 const FilterTypes = {
   TYPE: 'type',
@@ -176,7 +53,7 @@ const guestValueToType = {
   not: 0,
 };
 
-const debounce = (callback, timeoutDelay = DEBOUNCE_TIMER) => {
+const debounce = (callback, timeoutDelay = DEBOUNCE_DELAY) => {
   let timeoutId;
 
   return (...rest) => {
@@ -186,12 +63,12 @@ const debounce = (callback, timeoutDelay = DEBOUNCE_TIMER) => {
   };
 };
 
-const mapFilterElement = document.querySelector('.map__filters');
-const selectTypeElement = mapFilterElement.querySelector('#housing-type');
-const selectPriceElement = mapFilterElement.querySelector('#housing-price');
-const selectRoomsElement = mapFilterElement.querySelector('#housing-rooms');
-const selectGuestsElement = mapFilterElement.querySelector('#housing-guests');
-const fieldsetFeaturesElement = mapFilterElement.querySelector('#housing-features');
+const mapFilter = document.querySelector('.map__filters');
+const selectType = mapFilter.querySelector('#housing-type');
+const selectPrice = mapFilter.querySelector('#housing-price');
+const selectRooms = mapFilter.querySelector('#housing-rooms');
+const selectGuests = mapFilter.querySelector('#housing-guests');
+const fieldsetFeatures = mapFilter.querySelector('#housing-features');
 
 let defaultPoints = [];
 
@@ -324,17 +201,17 @@ const getFilteredPointToAllParameters = (filterParameters) => {
   return filteredPoints;
 };
 
-const onMapFilterElementChange = () => {
-  const activeCheckboxElements = fieldsetFeaturesElement.querySelectorAll('input:checked');
+const onMapFilterChange = () => {
+  const activeCheckboxElements = fieldsetFeatures.querySelectorAll('input:checked');
   const featuresValues = Array.from(activeCheckboxElements).map((element) => element.value);
 
   clearMap();
 
   const filterParameters = {
-    type: selectTypeElement.value,
-    price: selectPriceElement.value,
-    room: selectRoomsElement.value,
-    guest: selectGuestsElement.value,
+    type: selectType.value,
+    price: selectPrice.value,
+    room: selectRooms.value,
+    guest: selectGuests.value,
     features: featuresValues,
   };
 
@@ -343,11 +220,11 @@ const onMapFilterElementChange = () => {
 
 const startFilter = (data) => {
   defaultPoints = data;
-  mapFilterElement.addEventListener('change', debounce(onMapFilterElementChange));
+  mapFilter.addEventListener('change', debounce(onMapFilterChange));
 };
 
 const resetFilter = () => {
-  mapFilterElement.reset();
+  mapFilter.reset();
   clearMap();
   renderPointsToMap(defaultPoints);
 };
