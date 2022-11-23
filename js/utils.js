@@ -1,3 +1,5 @@
+import { DEBOUNCE_DELAY } from './consts.js';
+
 const getRandomPositiveInteger = (a, b) => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
   const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
@@ -26,4 +28,15 @@ const declineNum = ( n, titles ) => {
   return titles[index];
 };
 
-export { getRandomPositiveInteger, getRandomPositiveFloat, declineNum };
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const debounce = (callback, timeoutDelay = DEBOUNCE_DELAY) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export { getRandomPositiveInteger, getRandomPositiveFloat, declineNum, isEscapeKey, debounce };
