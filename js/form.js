@@ -8,6 +8,7 @@ import { slider } from './slider.js';
 import { resetFilter } from './filter.js';
 
 const resetButton = form.querySelector('.ad-form__reset');
+const submitButton = form.querySelector('.ad-form__submit');
 
 const resetForm = () => {
   form.reset();
@@ -22,18 +23,27 @@ resetButton.addEventListener('click', (evt) => {
   resetForm();
 });
 
+const changeStateButtons = (isDisabled = false) => {
+  resetButton.disabled = isDisabled;
+  submitButton.disabled = isDisabled;
+};
+
 const onFormSubmit = (evt) => {
   evt.preventDefault();
 
   if (pristine.validate()) {
+    changeStateButtons(true);
     sendData(() => {
       openPopup();
       resetForm();
+      resetFilter();
     }, () => openPopup(ErrorPopupMessage.ERROR_POST), new FormData(evt.target));
   }
 };
 
-export const initForm = () => {
+const initForm = () => {
   getPreviewImg();
   form.addEventListener('submit', onFormSubmit);
 };
+
+export { changeStateButtons, initForm };

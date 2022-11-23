@@ -1,3 +1,4 @@
+import { changeStateButtons } from './form.js';
 import { isEscapeKey } from './utils.js';
 
 const body = document.querySelector('body');
@@ -24,6 +25,7 @@ function closePopup () {
   document.removeEventListener('click', onDocumentClick);
   const popup = body.querySelector('.js-popup');
   popup.remove();
+  changeStateButtons(false);
 }
 
 const openPopup = (errorMessage, isGetDataError = false) => {

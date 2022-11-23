@@ -12,6 +12,15 @@ const createFeaturesTemplate = (features) => `<ul class="popup__features">
   ${features.map((feature) => `<li class="popup__feature popup__feature--${feature}"></li>`).join('')}
 </ul>`;
 
+const getPhotosTemplate = (photos) => {
+  if (!photos) {
+    return '';
+  }
+  return `<div class="popup__photos">
+  ${photos.map((photo) => `<img src="${photo}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join('')}
+</div>`;
+};
+
 export const createCardTemplate = (author, offer) => {
   const declinedRooms = declineNum(offer.rooms, ['комната', 'комнаты', 'комнат']);
   const declinedGuests = declineNum(offer.guests, ['гостя', 'гостей', 'гостей']);
@@ -26,8 +35,6 @@ export const createCardTemplate = (author, offer) => {
       <p class="popup__text popup__text--time">Заезд после ${offer.checkin}, выезд до ${offer.checkout}</p>
       ${offer.features ? createFeaturesTemplate(offer.features) : ''}
       ${offer.description ? ` <p class="popup__description">${offer.description}</p>` : ''}
-      <div class="popup__photos">
-        ${offer.photos.map((photo) => `<img src="${photo}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join('')}
-      </div>
+      ${getPhotosTemplate(offer.photos)}
   </article>`;
 };

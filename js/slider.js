@@ -1,8 +1,5 @@
 import { validateElement } from './validation.js';
 
-const slider = document.querySelector('.ad-form__slider');
-const priceField = document.querySelector('[name="price"]');
-
 const Price = {
   MIN: 0,
   MAX: 100000,
@@ -12,6 +9,9 @@ const Slider = {
   START: 5000,
   STEP: 100,
 };
+
+const slider = document.querySelector('.ad-form__slider');
+const priceField = document.querySelector('[name="price"]');
 
 const initSlider = () => {
   noUiSlider.create(slider, {

@@ -1,12 +1,12 @@
 import { switchStatePage } from './page.js';
 import { createCardTemplate } from './card.js';
-import { COUNT_OBJECTS } from './consts.js';
+import { MAX_COUNT_OFFER } from './consts.js';
 
 export const MainPinCoordinates = {
   LAT: 35.68399,
   LNG: 139.75378,
-  scale: 12,
-  digits: 5,
+  SCALE: 12,
+  DIGITS: 5,
 };
 
 const map = L.map('map-canvas');
@@ -37,7 +37,7 @@ const mainPinMarker = L.marker(
 const setMainPin = () => {
   mainPinMarker.addTo(map);
   mainPinMarker.addTo(map).on('move', (evt) => {
-    document.querySelector('.ad-form').querySelector('#address').value = `${evt.target.getLatLng().lat.toFixed(MainPinCoordinates.digits)} ${evt.target.getLatLng().lng.toFixed(MainPinCoordinates.digits)}`;
+    document.querySelector('.ad-form').querySelector('#address').value = `${evt.target.getLatLng().lat.toFixed(MainPinCoordinates.DIGITS)} ${evt.target.getLatLng().lng.toFixed(MainPinCoordinates.DIGITS)}`;
   });
 };
 
@@ -59,10 +59,10 @@ const createNearbyMarker = ({author, offer, location}) => {
 const clearMap = () => markerGroup.clearLayers();
 
 export const renderPointsToMap = (points) => {
-  points.slice(0, COUNT_OBJECTS).forEach((point) => createNearbyMarker(point));
+  points.slice(0, MAX_COUNT_OFFER).forEach((point) => createNearbyMarker(point));
 };
 
-const setDefaultAdressInput = () => {
+const setDefaultAddressInput = () => {
   document.querySelector('.ad-form').querySelector('#address').value = `${MainPinCoordinates.LAT}, ${MainPinCoordinates.LNG}`;
 };
 
@@ -75,7 +75,7 @@ const loadMap = (points) => {
     .setView({
       lat: MainPinCoordinates.LAT,
       lng: MainPinCoordinates.LNG,
-    }, MainPinCoordinates.scale);
+    }, MainPinCoordinates.SCALE);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -84,7 +84,7 @@ const loadMap = (points) => {
     },
   ).addTo(map);
   setMainPin(map);
-  setDefaultAdressInput();
+  setDefaultAddressInput();
   markerGroup.addTo(map);
 };
 
@@ -92,12 +92,12 @@ const resetMap = () => {
   map.setView({
     lat: MainPinCoordinates.LAT,
     lng: MainPinCoordinates.LNG,
-  }, MainPinCoordinates.scale);
+  }, MainPinCoordinates.SCALE);
   mainPinMarker.setLatLng({
     lat: MainPinCoordinates.LAT,
     lng: MainPinCoordinates.LNG,
   });
-  setDefaultAdressInput();
+  setDefaultAddressInput();
   map.closePopup();
 };
 
