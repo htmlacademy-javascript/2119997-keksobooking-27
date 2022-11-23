@@ -8,55 +8,26 @@ const typePopup = {
   hotel: 'Отель',
 };
 
-const mapCanvas = document.querySelector('#map-canvas');
-const offerTemplate = document.querySelector('#card').content.querySelector('.popup');
-const offersListFragment = document.createDocumentFragment();
+const createFeaturesTemplate = (features) => `<ul class="popup__features">
+  ${features.map((feature) => `<li class="popup__feature popup__feature--${feature}"></li>`).join('')}
+</ul>`;
 
-export const createCard = (({ author, offer }) => {
-  const offerElement = offerTemplate.cloneNode(true);
-  offerElement.querySelector('.popup__title').textContent = offer.title;
-  offerElement.querySelector('.popup__text--address').textContent = offer.addres;
-  offerElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-  offerElement.querySelector('.popup__type').textContent = typePopup[offer.type];
-
+export const createCardTemplate = (author, offer) => {
   const declinedRooms = declineNum(offer.rooms, ['комната', 'комнаты', 'комнат']);
   const declinedGuests = declineNum(offer.guests, ['гостя', 'гостей', 'гостей']);
-  offerElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${declinedRooms} для ${offer.guests} ${declinedGuests}`;
-  offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
 
-  const featuresContainer = offerElement.querySelector('.popup__features');
-  const featuresList = featuresContainer.querySelectorAll('.popup__feature');
-  if (offer.features.length > 0) {
-    featuresList.forEach((featuresListItem) => {
-      const isNecessary = offer.features.some(
-        (feature) => featuresListItem.classList.contains(`popup__feature--${feature}`),
-      );
-      if (!isNecessary) {
-        featuresListItem.remove();
-      }
-    });
-  } else {
-    featuresContainer.remove();
-  }
-
-  const offerDescription = offerElement.querySelector('.popup__description');
-  if (offer.description.length) {
-    offerDescription.textContent = offer.description;
-  } else {
-    offerDescription.remove();
-  }
-  offerElement.querySelector('.popup__photo').src = offer.photos;
-
-  offerElement.querySelector('.popup__avatar').src = author.avatar;
-  offersListFragment.append(offerElement);
-});
-
-const createCards = (offers) => {
-  offers.forEach((offer) => createCard(offer));
-  mapCanvas.append(offersListFragment);
+  return `<article class="popup">
+      <img src="${author.avatar}" class="popup__avatar" width="70" height="70" alt="Аватар пользователя">
+      <h3 class="popup__title">${offer.title}</h3>
+      <p class="popup__text popup__text--address">${offer.address}</p>
+      <p class="popup__text popup__text--price">${offer.price} <span>₽/ночь</span></p>
+      <h4 class="popup__type">${typePopup[offer.type]}</h4>
+      <p class="popup__text popup__text--capacity">${offer.rooms} ${declinedRooms} для ${offer.guests} ${declinedGuests}</p>
+      <p class="popup__text popup__text--time">Заезд после ${offer.checkin}, выезд до ${offer.checkout}</p>
+      ${offer.features ? createFeaturesTemplate(offer.features) : ''}
+      ${offer.description ? ` <p class="popup__description">${offer.description}</p>` : ''}
+      <div class="popup__photos">
+        ${offer.photos.map((photo) => `<img src="${photo}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join('')}
+      </div>
+  </article>`;
 };
-
-export const initCards = (offers) => {
-  createCards(offers);
-};
-

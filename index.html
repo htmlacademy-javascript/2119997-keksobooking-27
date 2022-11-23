@@ -89,10 +89,8 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="title">Заголовок объявления</label>
-          <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио" minlength="30" maxlength="100" required
-          data-pristine-required-message="Обязательное поле"
-          data-pristine-minlength-message="Минимальная длина 30 символов"
-          data-pristine-maxlength-message="Максимальная длина 100 символов">
+          <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио" required
+          data-pristine-required-message="Обязательное поле">
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
@@ -102,17 +100,15 @@
           <label class="ad-form__label" for="type">Тип жилья</label>
           <select id="type" name="type">
             <option value="bungalow">Бунгало</option>
-            <option value="flat" selected>Квартира</option>
+            <option value="flat" >Квартира</option>
             <option value="hotel">Отель</option>
-            <option value="house">Дом</option>
+            <option value="house" selected>Дом</option>
             <option value="palace">Дворец</option>
           </select>
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
-          <input id="price" name="price" type="number" min="0" max="100000" placeholder="5000" required
-          data-pristine-required-message="Обязательное поле"
-          data-pristine-max-message="Максимальная цена 100000">
+          <input id="price" name="price" type="number" min="0" max="100000" placeholder="5000" required>
           <div class="ad-form__slider"></div>
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--time">
