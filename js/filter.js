@@ -1,4 +1,4 @@
-import { DEBOUNCE_DELAY } from './consts.js';
+import { debounce } from './utils.js';
 import { renderPointsToMap, clearMap } from './map.js';
 
 const FilterTypes = {
@@ -23,44 +23,6 @@ const PriceTypes = {
   LOW: 'low',
   MIDDLE: 'middle',
   HIGH: 'high',
-};
-
-const RoomTypes = {
-  ANY: 'any',
-  ONE: 'one',
-  TWO: 'two',
-  THREE: 'three',
-};
-
-const GuestTypes = {
-  ANY: 'any',
-  ONE: 'one',
-  TWO: 'two',
-  NOT: 'not',
-};
-
-const roomValueToType = {
-  any: 0,
-  one: 1,
-  two: 2,
-  three: 3,
-};
-
-const guestValueToType = {
-  any: 0,
-  one: 1,
-  two: 2,
-  not: 0,
-};
-
-const debounce = (callback, timeoutDelay = DEBOUNCE_DELAY) => {
-  let timeoutId;
-
-  return (...rest) => {
-    clearTimeout(timeoutId);
-
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
-  };
 };
 
 const mapFilter = document.querySelector('.map__filters');
@@ -94,55 +56,20 @@ const getFilteredPointsToPrice = (points, price) => {
   return filteredPoints;
 };
 
+
 const getFilteredPointsToRoom = (points, room) => {
-  const filteredPoints = points.filter(({offer}) => {
-    let isMatch = true;
-
-    if (room === RoomTypes.ANY) {
-      isMatch = offer.rooms >= roomValueToType[room];
-    }
-
-    if (room === RoomTypes.ONE) {
-      isMatch = offer.rooms === roomValueToType[room];
-    }
-
-    if (room === RoomTypes.TWO) {
-      isMatch = offer.rooms === roomValueToType[room];
-    }
-
-    if (room === RoomTypes.THREE) {
-      isMatch = offer.rooms === roomValueToType[room];
-    }
-
-    return isMatch;
-  });
-
+  let filteredPoints = points.slice();
+  if (room !== 'any') {
+    filteredPoints = points.filter(({offer}) => ({offer}).offer.rooms === Number(room));
+  }
   return filteredPoints;
 };
 
 const getFilteredPointsToGuest = (points, guest) => {
-  const filteredPoints = points.filter(({offer}) => {
-    let isMatch = true;
-
-    if (guest === GuestTypes.ANY) {
-      isMatch = offer.guests >= guestValueToType[guest];
-    }
-
-    if (guest === GuestTypes.ONE) {
-      isMatch = offer.guests === guestValueToType[guest];
-    }
-
-    if (guest === GuestTypes.TWO) {
-      isMatch = offer.guests === guestValueToType[guest];
-    }
-
-    if (guest === GuestTypes.NOT) {
-      isMatch = offer.guests === guestValueToType[guest];
-    }
-
-    return isMatch;
-  });
-
+  let filteredPoints = points.slice();
+  if (guest !== 'any') {
+    filteredPoints = points.filter(({offer}) => ({offer}).offer.guests === Number(guest));
+  }
   return filteredPoints;
 };
 

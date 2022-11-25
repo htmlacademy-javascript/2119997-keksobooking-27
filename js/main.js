@@ -10,16 +10,16 @@ import { startFilter } from './filter.js';
 switchStatePage(true);
 initForm();
 
-const successGetDataHandler = (data) => {
+const getDataSuccessHandler = (data) => {
   const points = data.slice();
   loadMap(points);
   startFilter(points);
   initSlider();
 };
 
-const errorGetDataHandler = (message) => {
+const getDataErrorHandler = (message) => {
   openPopup(message, true);
   setTimeout(() => closePopup(), TIMEOUT_GET_DATA_ERROR_POPUP_SHOW);
 };
 
-getData(successGetDataHandler, errorGetDataHandler);
+getData(getDataSuccessHandler, getDataErrorHandler);
